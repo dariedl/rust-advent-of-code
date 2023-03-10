@@ -26,14 +26,15 @@ fn find_duplicate_in_rucksack(rucksack: &str) -> char {
     let compartment_length = rucksack.len() / 2;
 
     // Why can i not initialize it earlier? let compartment2 = rucksack[compartment_length..].chars();
-    for first_item in rucksack[..compartment_length].chars() {
-        for second_item in rucksack[compartment_length..].chars() {
-            if first_item == second_item {
-                return first_item;
-            }
-        }
-    }
-    panic!("Duplicate item not found in rucksack.");
+    rucksack[..compartment_length]
+        .chars()
+        .filter(|first_item| {
+            rucksack[compartment_length..]
+                .chars()
+                .any(|second_item| &second_item == first_item)
+        })
+        .next()
+        .unwrap()
 }
 
 fn map_to_digit(letter: char) -> i64 {
@@ -46,15 +47,10 @@ fn map_to_digit(letter: char) -> i64 {
     }
 }
 
-fn find_duplicate_in_group(a: &str, b: &str, c: &str) -> char {
-    for first_item in a.chars() {
-        for second_item in b.chars() {
-            for third_item in c.chars() {
-                if first_item == second_item && second_item == third_item {
-                    return first_item;
-                }
-            }
-        }
-    }
-    panic!("Duplicate item not found in group.");
+fn find_duplicate_in_group(a_rucksack: &str, b_rucksack: &str, c_rucksack: &str) -> char {
+    a_rucksack
+        .chars()
+        .filter(|a| b_rucksack.chars().any(|b| &b == a) && c_rucksack.chars().any(|c| &c == a))
+        .next()
+        .unwrap()
 }
