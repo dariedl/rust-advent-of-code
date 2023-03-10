@@ -11,11 +11,21 @@ fn main() {
         .map(map_to_digit)
         .sum::<i64>();
     println!("{sum_of_duplicates}");
+
+    let rucksacks = contents.split("\n").collect::<Vec<&str>>();
+    let sum_of_group_duplicates = rucksacks
+        .chunks(3)
+        .map(|chunk| find_duplicate_in_group(chunk[0], chunk[1], chunk[2]))
+        .map(map_to_digit)
+        .sum::<i64>();
+
+    println!("{sum_of_group_duplicates}");
 }
 
 fn find_duplicate_in_rucksack(rucksack: &str) -> char {
     let compartment_length = rucksack.len() / 2;
 
+    // Why can i not initialize it earlier? let compartment2 = rucksack[compartment_length..].chars();
     for first_item in rucksack[..compartment_length].chars() {
         for second_item in rucksack[compartment_length..].chars() {
             if first_item == second_item {
@@ -23,7 +33,7 @@ fn find_duplicate_in_rucksack(rucksack: &str) -> char {
             }
         }
     }
-    panic!("Duplicate item not found.");
+    panic!("Duplicate item not found in rucksack.");
 }
 
 fn map_to_digit(letter: char) -> i64 {
@@ -34,4 +44,17 @@ fn map_to_digit(letter: char) -> i64 {
     } else {
         panic!("Not a letter");
     }
+}
+
+fn find_duplicate_in_group(a: &str, b: &str, c: &str) -> char {
+    for first_item in a.chars() {
+        for second_item in b.chars() {
+            for third_item in c.chars() {
+                if first_item == second_item && second_item == third_item {
+                    return first_item;
+                }
+            }
+        }
+    }
+    panic!("Duplicate item not found in group.");
 }
