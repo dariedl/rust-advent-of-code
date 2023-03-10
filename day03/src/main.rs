@@ -10,23 +10,16 @@ fn main() {
         .map(find_duplicate_in_rucksack)
         .map(map_to_digit)
         .sum::<i64>();
-    println!("{sum_of_duplicates}")
+    println!("{sum_of_duplicates}");
 }
 
 fn find_duplicate_in_rucksack(rucksack: &str) -> char {
     let compartment_length = rucksack.len() / 2;
 
-    let compartment1 = rucksack[..compartment_length]
-        .chars()
-        .collect::<Vec<char>>();
-    let compartment2 = rucksack[compartment_length..]
-        .chars()
-        .collect::<Vec<char>>();
-
-    for first_item in &compartment1 {
-        for second_item in &compartment2 {
+    for first_item in rucksack[..compartment_length].chars() {
+        for second_item in rucksack[compartment_length..].chars() {
             if first_item == second_item {
-                return *first_item;
+                return first_item;
             }
         }
     }
