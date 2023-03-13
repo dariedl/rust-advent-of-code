@@ -39,9 +39,9 @@ fn find_duplicate_in_rucksack(rucksack: &str) -> char {
 
 fn map_to_digit(letter: char) -> i64 {
     if letter.is_lowercase() {
-        return letter as i64 - 96;
+        letter as i64 - 96
     } else if letter.is_uppercase() {
-        return letter as i64 - 38;
+        letter as i64 - 38
     } else {
         panic!("Not a letter");
     }
