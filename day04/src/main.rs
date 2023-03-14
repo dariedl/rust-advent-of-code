@@ -7,18 +7,16 @@ fn main() {
 
     let overlapped: Vec<bool> = contents
         .split("\n")
-        // Filtermap maybe
-        .map(|pair| match fully_contains_assignment(pair) {
-            Ok(true) => true,
-            Ok(false) => false,
+        .filter_map(|pair| match fully_contains_assignment(pair) {
+            Ok(true) => Some(true),
+            Ok(false) => Some(false),
             Err(msg) => {
                 panic!("Mayday! Mayday! {msg}")
             }
         })
-        .filter(|&x| x == true)
         .collect();
 
-    println!("Length 4a: {}", overlapped.len());
+    println!("Length 4a): {}", overlapped.len());
 
     let partially_overlapped: Vec<bool> = contents
         .split("\n")
