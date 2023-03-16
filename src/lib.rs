@@ -1,5 +1,3 @@
-mod puzzles;
-
 pub struct PuzzleConfig {
     number: u64,
     input: String,
@@ -9,6 +7,13 @@ impl PuzzleConfig {
     pub fn new(number: u64, input: String) -> PuzzleConfig {
         PuzzleConfig { number, input }
     }
+}
+
+mod puzzles {
+    pub mod day_01;
+    pub mod day_02;
+    pub mod day_03;
+    pub mod day_04;
 }
 
 pub fn run(config: PuzzleConfig) {
