@@ -27,10 +27,10 @@ mod puzzles {
 
 pub fn run(config: PuzzleConfig) {
     let results: PuzzleResult = match config.number {
-        1 => puzzles::day_01::solve(config.input),
-        2 => puzzles::day_02::solve(config.input),
-        3 => puzzles::day_03::solve(config.input),
-        4 => puzzles::day_04::solve(config.input),
+        1 => puzzles::day_01::solve(&config.input),
+        2 => puzzles::day_02::solve(&config.input),
+        3 => puzzles::day_03::solve(&config.input),
+        4 => puzzles::day_04::solve(&config.input),
         _ => panic!("We don't have this puzzle"),
     };
 

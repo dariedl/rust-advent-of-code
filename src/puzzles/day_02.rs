@@ -1,6 +1,6 @@
 use crate::{PuzzleResult, SubTaskResult};
 
-pub fn solve(input: String) -> PuzzleResult {
+pub fn solve(input: &str) -> PuzzleResult {
     let rounds = Vec::from_iter(input.split("\n"));
     PuzzleResult {
         task_a: SubTaskResult {
@@ -101,4 +101,19 @@ fn round_score_b(round: &str) -> u64 {
         map_to_outcome_b(round_moves[1]),
     );
     return calc_score_b(opponent_move, outcome);
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::puzzles::day_02::solve;
+
+    #[test]
+    fn it_should_solve_day02() {
+        let input = "A Y\n\
+            B X\n\
+            C Z";
+        let result = solve(input);
+        assert_eq!(result.task_a.result, 15);
+        assert_eq!(result.task_b.result, 12);
+    }
 }

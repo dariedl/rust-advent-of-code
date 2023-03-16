@@ -1,6 +1,6 @@
 use crate::{PuzzleResult, SubTaskResult};
 
-pub fn solve(input: String) -> PuzzleResult {
+pub fn solve(input: &str) -> PuzzleResult {
     let elves = input.split("\n\n");
     let calories_per_elf: Vec<u64> = elves
         .map(|elf| elf.split("\n"))
@@ -26,4 +26,26 @@ fn calories_carried_by_top_three(calories_per_elf: &Vec<u64>) -> u64 {
     sorted_calories_per_elf.sort_by(|a, b| b.cmp(a));
 
     sorted_calories_per_elf[0] + sorted_calories_per_elf[1] + sorted_calories_per_elf[2]
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::puzzles::day_01::solve;
+
+    #[test]
+    fn it_should_solve_day01() {
+        let input = "1000\n\
+        2000\n\
+        3000\n\n\
+        4000\n\n\
+        5000\n\
+        6000\n\n\
+        7000\n\
+        8000\n\
+        9000\n\n\
+        10000";
+        let result = solve(input);
+        assert_eq!(result.task_a.result, 24000);
+        assert_eq!(result.task_b.result, 45000);
+    }
 }

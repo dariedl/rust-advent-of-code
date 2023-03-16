@@ -1,6 +1,6 @@
 use crate::{PuzzleResult, SubTaskResult};
 
-pub fn solve(input: String) -> PuzzleResult {
+pub fn solve(input: &str) -> PuzzleResult {
     let sum_of_duplicates = input
         .split("\n")
         .map(find_duplicate_in_rucksack)
@@ -57,4 +57,22 @@ fn find_duplicate_in_group(a_rucksack: &str, b_rucksack: &str, c_rucksack: &str)
         .filter(|a| b_rucksack.chars().any(|b| &b == a) && c_rucksack.chars().any(|c| &c == a))
         .next()
         .unwrap()
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::puzzles::day_03::solve;
+
+    #[test]
+    fn it_should_solve_day03() {
+        let input = "vJrwpWtwJgWrhcsFMMfFFhFp\n\
+        jqHRNqRjqzjGDLGLrsFMfFZSrLrFZsSL\n\
+        PmmdzqPrVvPwwTWBwg\n\
+        wMqvLMZHhHMvwLHjbvcjnnSBnvTQFn\n\
+        ttgJtRGJQctTZtZT\n\
+        CrZsJsPPZsGzwwsLwLmpwMDw";
+        let result = solve(input);
+        assert_eq!(result.task_a.result, 157);
+        assert_eq!(result.task_b.result, 70);
+    }
 }

@@ -1,11 +1,11 @@
 use crate::{PuzzleResult, SubTaskResult};
 
-pub fn solve(input: String) -> PuzzleResult {
+pub fn solve(input: &str) -> PuzzleResult {
     let overlapped: Vec<bool> = input
         .split("\n")
         .filter_map(|pair| match fully_contains_assignment(pair) {
             Ok(true) => Some(true),
-            Ok(false) => Some(false),
+            Ok(false) => None,
             Err(msg) => {
                 panic!("Mayday! Mayday! {msg}")
             }
@@ -95,5 +95,23 @@ fn section_range_of(range: &str) -> Result<SectionRange, String> {
             (Ok(f), Ok(t)) => Ok(SectionRange { from: f, to: t }),
             _ => Err(format!("Could not parse range: {range}")),
         },
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::puzzles::day_04::solve;
+
+    #[test]
+    fn it_should_solve_day04() {
+        let input = "2-4,6-8\n\
+        2-3,4-5\n\
+        5-7,7-9\n\
+        2-8,3-7\n\
+        6-6,4-6\n\
+        2-6,4-8";
+        let result = solve(input);
+        assert_eq!(result.task_a.result, 2);
+        assert_eq!(result.task_b.result, 4);
     }
 }
