@@ -1,18 +1,12 @@
-use std::fs;
-use std::str;
-
-fn main() {
-    const FILEPATH: &str = "input.txt";
-    let contents = fs::read_to_string(FILEPATH).expect("Should have been able to read the file");
-
-    let sum_of_duplicates = contents
+pub fn solve(input: String) {
+    let sum_of_duplicates = input
         .split("\n")
         .map(find_duplicate_in_rucksack)
         .map(map_to_digit)
         .sum::<i64>();
     println!("{sum_of_duplicates}");
 
-    let rucksacks = contents.split("\n").collect::<Vec<&str>>();
+    let rucksacks = input.split("\n").collect::<Vec<&str>>();
     let sum_of_group_duplicates = rucksacks
         .chunks(3)
         .map(|chunk| find_duplicate_in_group(chunk[0], chunk[1], chunk[2]))

@@ -1,10 +1,5 @@
-use std::fs;
-
-fn main() {
-    const FILEPATH: &str = "input.txt";
-    let contents = fs::read_to_string(FILEPATH).expect("Should have been able to read the file");
-
-    let rounds = Vec::from_iter(contents.split("\n"));
+pub fn solve(input: String) {
+    let rounds = Vec::from_iter(input.split("\n"));
     let score_a: u32 = rounds.iter().map(|round| round_score_a(round)).sum();
     println!("Final score A: {score_a}");
 

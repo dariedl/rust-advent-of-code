@@ -1,10 +1,5 @@
-use std::{fs, num::ParseIntError};
-
-fn main() {
-    const FILEPATH: &str = "input.txt";
-    let contents = fs::read_to_string(FILEPATH).expect("Should have been able to read the file");
-
-    let elves = contents.split("\n\n");
+pub fn solve(input: String) {
+    let elves = input.split("\n\n");
     let calories_per_elf: Vec<u64> = elves
         .map(|elf| elf.split("\n"))
         .map(|elf_calories| {

@@ -1,11 +1,5 @@
-use std::fs;
-use std::str;
-
-fn main() {
-    const FILEPATH: &str = "input.txt";
-    let contents = fs::read_to_string(FILEPATH).expect("Should have been able to read the file");
-
-    let overlapped: Vec<bool> = contents
+pub fn solve(input: String) {
+    let overlapped: Vec<bool> = input
         .split("\n")
         .filter_map(|pair| match fully_contains_assignment(pair) {
             Ok(true) => Some(true),
@@ -18,7 +12,7 @@ fn main() {
 
     println!("Length 4a): {}", overlapped.len());
 
-    let partially_overlapped: Vec<bool> = contents
+    let partially_overlapped: Vec<bool> = input
         .split("\n")
         // Filtermap maybe
         .map(|pair| match partially_contains_assignment(pair) {
