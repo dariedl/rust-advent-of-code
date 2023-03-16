@@ -1,19 +1,29 @@
-pub fn solve(input: String) {
+use crate::{PuzzleResult, SubTaskResult};
+
+pub fn solve(input: String) -> PuzzleResult {
     let sum_of_duplicates = input
         .split("\n")
         .map(find_duplicate_in_rucksack)
         .map(map_to_digit)
-        .sum::<i64>();
-    println!("{sum_of_duplicates}");
+        .sum::<u64>();
 
     let rucksacks = input.split("\n").collect::<Vec<&str>>();
     let sum_of_group_duplicates = rucksacks
         .chunks(3)
         .map(|chunk| find_duplicate_in_group(chunk[0], chunk[1], chunk[2]))
         .map(map_to_digit)
-        .sum::<i64>();
+        .sum::<u64>();
 
-    println!("{sum_of_group_duplicates}");
+    PuzzleResult {
+        task_a: SubTaskResult {
+            description: String::from("3a) Sum of duplicates"),
+            result: sum_of_duplicates,
+        },
+        task_b: SubTaskResult {
+            description: String::from("3b) Sum of group duplicates"),
+            result: sum_of_group_duplicates,
+        },
+    }
 }
 
 fn find_duplicate_in_rucksack(rucksack: &str) -> char {
@@ -31,11 +41,11 @@ fn find_duplicate_in_rucksack(rucksack: &str) -> char {
         .unwrap()
 }
 
-fn map_to_digit(letter: char) -> i64 {
+fn map_to_digit(letter: char) -> u64 {
     if letter.is_lowercase() {
-        letter as i64 - 96
+        letter as u64 - 96
     } else if letter.is_uppercase() {
-        letter as i64 - 38
+        letter as u64 - 38
     } else {
         panic!("Not a letter");
     }

@@ -1,4 +1,6 @@
-pub fn solve(input: String) {
+use crate::{PuzzleResult, SubTaskResult};
+
+pub fn solve(input: String) -> PuzzleResult {
     let overlapped: Vec<bool> = input
         .split("\n")
         .filter_map(|pair| match fully_contains_assignment(pair) {
@@ -10,11 +12,8 @@ pub fn solve(input: String) {
         })
         .collect();
 
-    println!("Length 4a): {}", overlapped.len());
-
     let partially_overlapped: Vec<bool> = input
         .split("\n")
-        // Filtermap maybe
         .map(|pair| match partially_contains_assignment(pair) {
             Ok(true) => true,
             Ok(false) => false,
@@ -25,7 +24,16 @@ pub fn solve(input: String) {
         .filter(|&x| x == true)
         .collect();
 
-    println!("Length 4b) {}", partially_overlapped.len());
+    PuzzleResult {
+        task_a: SubTaskResult {
+            description: String::from("4a) No. of complete overlaps"),
+            result: overlapped.len() as u64,
+        },
+        task_b: SubTaskResult {
+            description: String::from("4b) No. of partial overlaps"),
+            result: partially_overlapped.len() as u64,
+        },
+    }
 }
 
 fn fully_contains_assignment(pair: &str) -> Result<bool, String> {

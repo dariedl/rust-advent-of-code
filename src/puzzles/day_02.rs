@@ -1,10 +1,17 @@
-pub fn solve(input: String) {
-    let rounds = Vec::from_iter(input.split("\n"));
-    let score_a: u32 = rounds.iter().map(|round| round_score_a(round)).sum();
-    println!("Final score A: {score_a}");
+use crate::{PuzzleResult, SubTaskResult};
 
-    let score_b: u32 = rounds.iter().map(|round| round_score_b(round)).sum();
-    println!("Final score B: {score_b}");
+pub fn solve(input: String) -> PuzzleResult {
+    let rounds = Vec::from_iter(input.split("\n"));
+    PuzzleResult {
+        task_a: SubTaskResult {
+            description: String::from("2a) Final score"),
+            result: rounds.iter().map(|round| round_score_a(round)).sum(),
+        },
+        task_b: SubTaskResult {
+            description: String::from("2b) Final score"),
+            result: rounds.iter().map(|round| round_score_b(round)).sum(),
+        },
+    }
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -25,7 +32,7 @@ fn map_to_shape_a(text: &str) -> Shape {
     }
 }
 
-fn calc_score_a(opponent_move: Shape, own_move: Shape) -> u32 {
+fn calc_score_a(opponent_move: Shape, own_move: Shape) -> u64 {
     let shape_score = match own_move {
         Shape::Rock => 1,
         Shape::Paper => 2,
@@ -45,7 +52,7 @@ fn calc_score_a(opponent_move: Shape, own_move: Shape) -> u32 {
     return shape_score + outcome_score;
 }
 
-fn round_score_a(round: &str) -> u32 {
+fn round_score_a(round: &str) -> u64 {
     let round_moves = Vec::from_iter(round.split(" "));
     let (opponent_move, own_move) = (
         map_to_shape_a(round_moves[0]),
@@ -56,7 +63,7 @@ fn round_score_a(round: &str) -> u32 {
 
 // B ------
 
-fn map_to_outcome_b(text: &str) -> u32 {
+fn map_to_outcome_b(text: &str) -> u64 {
     match text {
         "X" => 0,
         "Y" => 3,
@@ -65,7 +72,7 @@ fn map_to_outcome_b(text: &str) -> u32 {
     }
 }
 
-fn calc_score_b(opponent_move: Shape, outcome: u32) -> u32 {
+fn calc_score_b(opponent_move: Shape, outcome: u64) -> u64 {
     let own_move = match (opponent_move, outcome) {
         (Shape::Rock, 3) => Shape::Rock,
         (Shape::Rock, 6) => Shape::Paper,
@@ -87,7 +94,7 @@ fn calc_score_b(opponent_move: Shape, outcome: u32) -> u32 {
     return shape_score + outcome;
 }
 
-fn round_score_b(round: &str) -> u32 {
+fn round_score_b(round: &str) -> u64 {
     let round_moves = Vec::from_iter(round.split(" "));
     let (opponent_move, outcome) = (
         map_to_shape_a(round_moves[0]),
