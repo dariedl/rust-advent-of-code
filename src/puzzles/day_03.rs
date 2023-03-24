@@ -17,27 +17,27 @@ pub fn solve(input: &str) -> PuzzleResult {
     PuzzleResult {
         task_a: SubTaskResult {
             description: String::from("3a) Sum of duplicates"),
-            result: sum_of_duplicates,
+            result: sum_of_duplicates.to_string(),
         },
         task_b: SubTaskResult {
             description: String::from("3b) Sum of group duplicates"),
-            result: sum_of_group_duplicates,
+            result: sum_of_group_duplicates.to_string(),
         },
     }
 }
 
 fn find_duplicate_in_rucksack(rucksack: &str) -> char {
     let compartment_length = rucksack.len() / 2;
+    let compartment1 = &rucksack[..compartment_length];
+    let compartment2 = &rucksack[compartment_length..];
 
-    // Why can i not initialize it earlier? let compartment2 = rucksack[compartment_length..].chars();
-    rucksack[..compartment_length]
+    compartment1
         .chars()
-        .filter(|first_item| {
-            rucksack[compartment_length..]
+        .find(|first_item| {
+            compartment2
                 .chars()
                 .any(|second_item| &second_item == first_item)
         })
-        .next()
         .unwrap()
 }
 
@@ -72,7 +72,7 @@ mod tests {
         ttgJtRGJQctTZtZT\n\
         CrZsJsPPZsGzwwsLwLmpwMDw";
         let result = solve(input);
-        assert_eq!(result.task_a.result, 157);
-        assert_eq!(result.task_b.result, 70);
+        assert_eq!(result.task_a.result, "157");
+        assert_eq!(result.task_b.result, "70");
     }
 }

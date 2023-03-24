@@ -27,11 +27,11 @@ pub fn solve(input: &str) -> PuzzleResult {
     PuzzleResult {
         task_a: SubTaskResult {
             description: String::from("4a) No. of complete overlaps"),
-            result: overlapped.len() as u64,
+            result: overlapped.len().to_string(),
         },
         task_b: SubTaskResult {
             description: String::from("4b) No. of partial overlaps"),
-            result: partially_overlapped.len() as u64,
+            result: partially_overlapped.len().to_string(),
         },
     }
 }
@@ -111,7 +111,7 @@ mod tests {
         6-6,4-6\n\
         2-6,4-8";
         let result = solve(input);
-        assert_eq!(result.task_a.result, 2);
-        assert_eq!(result.task_b.result, 4);
+        assert_eq!(result.task_a.result, "2");
+        assert_eq!(result.task_b.result, "4");
     }
 }

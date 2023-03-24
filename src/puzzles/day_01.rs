@@ -12,11 +12,11 @@ pub fn solve(input: &str) -> PuzzleResult {
     PuzzleResult {
         task_a: SubTaskResult {
             description: String::from("1a) Most calories carried"),
-            result: *most_calories_carried,
+            result: (*most_calories_carried).to_string(),
         },
         task_b: SubTaskResult {
             description: String::from("1b) Calories carried by top 3"),
-            result: calories_carried_by_top_three(&calories_per_elf),
+            result: calories_carried_by_top_three(&calories_per_elf).to_string(),
         },
     }
 }
@@ -45,7 +45,7 @@ mod tests {
         9000\n\n\
         10000";
         let result = solve(input);
-        assert_eq!(result.task_a.result, 24000);
-        assert_eq!(result.task_b.result, 45000);
+        assert_eq!(result.task_a.result, "24000");
+        assert_eq!(result.task_b.result, "45000");
     }
 }

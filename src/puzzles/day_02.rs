@@ -5,11 +5,19 @@ pub fn solve(input: &str) -> PuzzleResult {
     PuzzleResult {
         task_a: SubTaskResult {
             description: String::from("2a) Final score"),
-            result: rounds.iter().map(|round| round_score_a(round)).sum(),
+            result: rounds
+                .iter()
+                .map(|round| round_score_a(round))
+                .sum::<u64>()
+                .to_string(),
         },
         task_b: SubTaskResult {
             description: String::from("2b) Final score"),
-            result: rounds.iter().map(|round| round_score_b(round)).sum(),
+            result: rounds
+                .iter()
+                .map(|round| round_score_b(round))
+                .sum::<u64>()
+                .to_string(),
         },
     }
 }
@@ -113,7 +121,7 @@ mod tests {
             B X\n\
             C Z";
         let result = solve(input);
-        assert_eq!(result.task_a.result, 15);
-        assert_eq!(result.task_b.result, 12);
+        assert_eq!(result.task_a.result, "15");
+        assert_eq!(result.task_b.result, "12");
     }
 }

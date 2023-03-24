@@ -11,7 +11,7 @@ impl PuzzleConfig {
 
 pub struct SubTaskResult {
     description: String,
-    result: u64,
+    result: String,
 }
 pub struct PuzzleResult {
     task_a: SubTaskResult,
