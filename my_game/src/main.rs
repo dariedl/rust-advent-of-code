@@ -1,6 +1,6 @@
 use specs::{
-    Builder, Component, DispatcherBuilder, Join, ReadStorage, System, VecStorage, World, WorldExt,
-    WriteStorage,
+    Builder, Component, Dispatcher, DispatcherBuilder, Join, ReadStorage, System, VecStorage,
+    World, WorldExt, WriteStorage,
 };
 
 #[derive(Debug)]
@@ -56,14 +56,12 @@ fn create_world() -> World {
     world
 }
 
-fn dispatch_world(world: &mut World) {
-    let mut dispatcher = DispatcherBuilder::new()
+fn dispatch_builder() -> Dispatcher<'static, 'static> {
+    DispatcherBuilder::new()
         .with(HelloWorld, "hello_world", &[])
         .with(UpdatePos, "update_pos", &["hello_world"])
         .with(HelloWorld, "hello_updated", &["update_pos"])
-        .build();
-
-    dispatcher.dispatch(world);
+        .build()
 }
 
 fn main() {
@@ -80,19 +78,18 @@ fn main() {
         .with(Position { x: 2.0, y: 5.0 })
         .with(Velocity { x: 0.1, y: 0.2 })
         .build();
-
-    dispatch_world(&mut world);
-    world.maintain();
+    let mut dispatcher = dispatch_builder();
+    dispatcher.dispatch(&mut world);
 }
 
 #[cfg(test)]
 mod tests {
-    use specs::{Builder, Join, WorldExt};
+    use specs::{Builder, Entities, Join, ReadStorage, RunNow, System, WorldExt};
 
-    use crate::{create_world, dispatch_world, Position, Velocity};
+    use crate::{create_world, dispatch_builder, Position, Velocity};
 
     #[test]
-    fn mixed_create_merge() {
+    fn first_test() {
         let mut world = create_world();
 
         world
@@ -105,13 +102,32 @@ mod tests {
             .with(Velocity { x: 0.1, y: 0.2 })
             .build();
 
-        dispatch_world(&mut world);
-        world.maintain();
-        let entities = &world.entities();
-        let r = entities.join();
-        // let five: Vec<_> = entities.create_iter().take(5).collect();
-        r.for_each(|e| {
-            println!("Entity: {:?}", e);
-        });
+        let mut dispatcher = dispatch_builder();
+        dispatcher.dispatch(&mut world);
+
+        struct CheckSys;
+
+        impl<'a> System<'a> for CheckSys {
+            type SystemData = (Entities<'a>, ReadStorage<'a, Position>);
+
+            fn run(&mut self, (entities, pos): Self::SystemData) {
+                for (entity, pos) in (&entities, &pos).join() {
+                    println!("Entity: {:?}", entity);
+                    if entity.id() == 0 {
+                        assert_eq!(pos.x, 4.0);
+                        assert_eq!(pos.y, 7.0);
+                    } else if entity.id() == 1 {
+                        assert_eq!(pos.x, 2.005);
+                        assert_eq!(pos.y, 5.01);
+                    } else {
+                        panic!();
+                    }
+                }
+            }
+        }
+
+        let mut check = CheckSys;
+        System::setup(&mut check, &mut world);
+        check.run_now(&world);
     }
 }
